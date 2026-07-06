@@ -1,0 +1,24 @@
+
+
+{% extends 'reservas/base.html' %}  <!--Se hereda la estructura del archivo base.html, para no comenzar desde cero-->
+{% block contenido %}
+<div class="card p-4 mx-auto style" style="max-width: 500px;"> <!--Se usa clases de Bootstrap para centrar y darle diseño al formulario-->
+    <h3 class="mb-3 text-center">{{ titulo }}</h3>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <div class="d-flex justify-content-end gap-2 mt-3">
+            <a href="{% url 'lista_vuelos' %}" class="btn btn-secondary">Volver</a>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
+    </form>
+</div>
+
+<!--Le da el diseño estilizado a ttodo el formulario automáticamente de Bootstrap-->
+
+<script>
+    document.querySelectorAll('input, select').forEach(el => el.classList.add('form-control'));
+
+</script>
+{% endblock %}

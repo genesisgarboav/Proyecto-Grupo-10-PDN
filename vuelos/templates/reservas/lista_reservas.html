@@ -1,0 +1,62 @@
+
+{% extends 'reservas/base.html' %} <!--Se hereda la estructura del archivo base.html, para no comenzar desde cero-->
+{% block contenido %}
+<div class="d-flex flex-column mb-3">
+    <h2 class="fw-bolder display-5 fst-italic mx-auto m-0 text-center w-100">Control de Reservas</h2>
+    <a href="{% url 'crear_reserva' %}" class="btn btn-primary fw-bold shadow-sm mt-2 align-self-end">+ Nueva Reserva</a> <!--Botón para ir a crear una reserva-->
+</div>
+
+<!--Buscador del Pasajero-->
+<form method="GET" class="input-group mb-3">
+    <input type="text" name="buscar" class="form-control" placeholder="Buscar pasajero por cédula..." value="{{ busqueda }}">
+    <button type="submit" class="btn bg-info-subtle text-info-emphasis border-info-subtle fw-semibold">Buscar Pasajero</button>
+</form>
+
+<table class="table table-striped table-bordered bg-white shadow-sm">
+    <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Pasajero</th>
+            <th>Cédula</th>
+            <th>Vuelo Asignado</th>
+            <th>Estado de Pago</th>
+            <th>Detalles</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for r in reservas %}
+        <tr>
+        <td>{{ r.id }}</td>
+        <td><strong>{{ r.pasajero_nombre }}</strong></td>
+            <td>{{ r.pasajero_cedula }}</td>
+            <td>{{ r.vuelo.codigo }} ({{ r.vuelo.origen }} ➔ {{ r.vuelo.destino }}) ——— {{ r.vuelo.fecha }}</td></td>
+            <td>
+                {% if r.estado == 'Pendiente' %}
+                    <span class="badge bg-warning text-dark">Pendiente de Pago</span>
+                {% elif r.estado == 'Confirmada' %}
+                    <span class="badge bg-success">Confirmada</span>
+                {% endif %}
+            </td>
+            <td>
+                {% if r.estado == 'Pendiente' %}
+                    <a href="{% url 'confirmar_pago' r.id %}" class="btn btn-sm btn-success me-1">Confirmar Pago</a>
+                {% else %}
+                    <span class="text-muted small">Proceso Concluido</span>
+                {% endif %}
+            </td>
+            <td>
+                <a href="{% url 'editar_reserva' r.id %}" class="btn btn-sm btn-warning">Editar</a>
+                <a href="{% url 'eliminar_reserva' r.id %}" class="btn btn-sm btn-danger">Borrar</a>
+            </td>
+        </tr>
+<!---Si la lista de reservas está vacía, usamos colspan="6" para fusionar las columnas y mostrar el mensaje centrado que no rompa el diseño de la tabla-->
+        {% empty %}
+
+        <tr>
+            <td colspan="6" class="text-center text-muted py-3">No hay reservas registradas en este momento.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

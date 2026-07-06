@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>AeroAndes</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light p-4">
+
+    <!-- Poner barra de Navegación con Título Centrado-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4 p-3 rounded shadow-sm">
+        <div class="container-fluid d-flex align-items-center">
+
+            <div class="flex-grow-1" style="flex-basis: 0;"></div> <!--Bloque invisible izquierdo para equilibrar el espacio -->
+
+            <a class="navbar-brand fw-bold mx-auto text-center fs-1 fst-italic" href="{% url 'lista_vuelos' %}" style="flex-basis: auto;">AeroAndes</a>
+
+            <!--Botones de Navegación (Ver vuelos)(Ver Reservas) alineados a la derecha-->
+            <div class="navbar-nav flex-grow-1 justify-content-end" style="flex-basis: 0;">
+                <a class="btn btn-secondary text-white fw-semibold me-2 shadow-sm" href="{% url 'lista_vuelos' %}">Ver Vuelos</a>
+                <a class="btn btn-secondary text-white fw-semibold shadow-sm" href="{% url 'lista_reservas' %}"> Ver Reservas</a>
+            </div>
+
+        </div>
+    </nav>
+
+    <!-- Alertas automáticas de Django -->
+<!--Sirve para mostrar los mensajes cuando un usuario hace alguna ejecución-->
+    {% if messages %}
+        {% for m in messages %}
+            <div class="alert text-bg-success fw-bold shadow-sm border-0">{{ m }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <!-- Espacio donde se cargan las otras páginas -->
+    {% block contenido %}
+    {% endblock %}
+
+</body>
+</html>

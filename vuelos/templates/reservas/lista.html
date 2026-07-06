@@ -1,0 +1,64 @@
+
+{% extends 'reservas/base.html' %} <!--Se hereda la estructura del archivo base.html, para no comenzar desde cero-->
+{% block contenido %}
+<div class="d-flex flex-column mb-3">
+    <h2 class="fw-bolder display-5 fst-italic mx-auto m-0 text-center w-100">Vuelos Disponibles</h2>
+    <a href="{% url 'crear_reserva' %}" class="btn btn-primary fw-bold shadow-sm mt-2 align-self-end">+ Nueva Reserva</a> <!-- Botón para crear una nueva reserva-->
+</div>
+
+<!--Buscador (Filtra los vuelos por ciudad de destino)-->
+<form method="GET" class="input-group mb-3">
+    <input type="text" name="buscar" class="form-control" placeholder="Buscar vuelos por destino (ej: Quito)..." value="{{ busqueda }}">
+    <button type="submit" class="btn bg-info-subtle text-info-emphasis border-info-subtle fw-semibold">Buscar</button>
+</form>
+
+<table class="table table-striped table-bordered bg-white shadow-sm">
+    <thead class="table-dark">
+        <tr>
+            <th>Código</th>
+            <th>Origen</th>
+            <th>Destino</th>
+            <th>Fecha</th>
+            <th>Estado</th>
+            <th>Asientos Disponibles</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for v in reservas %}
+        <tr>
+            <td><strong>{{ v.codigo }}</strong></td>
+            <td>{{ v.origen }}</td>
+            <td>{{ v.destino }}</td>
+            <td>{{ v.fecha }}</td>
+            <td>
+<!--Colores diseñados con Bootstrap para cada estado-->
+                {% if v.estado == 'Programado' %}
+                    <span class="badge bg-success">Programado</span>
+                {% elif v.estado == 'Abordando' %}
+                    <span class="badge bg-warning text-dark">Abordando</span>
+                {% elif v.estado == 'En vuelo' %}
+                    <span class="badge bg-secondary ">En vuelo</span>
+                {% elif v.estado == 'Aterrizado' %}
+                    <span class="badge bg-info text-dark">Aterrizado</span>
+                {% elif v.estado == 'Cancelado' %}
+                    <span class="badge bg-danger">Cancelado</span>
+                {% else %}
+                    <span class="badge bg-secondary">{{ v.estado }}</span>
+                {% endif %}
+            </td>
+            <td>
+                {% if v.asientos <= 0 %}
+                    <span class="text-danger fw-bold">Agotado (0)</span>
+                {% else %}
+                    <span class="text-success fw-bold">{{ v.asientos }}</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5" class="text-center text-muted py-3">No se encontraron vuelos registrados.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
