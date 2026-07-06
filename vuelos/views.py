@@ -84,4 +84,7 @@ def ver_reservas(request):
     else:
         todas_las_reservas = Reserva.objects.all().order_by('id')
 
+    for indice, reserva in enumerate(todas_las_reservas, start=1):
+        reserva.numero_visual = indice
+
     return render(request, 'reservas/lista_reservas.html', {'reservas': todas_las_reservas, 'busqueda': texto_buscado})

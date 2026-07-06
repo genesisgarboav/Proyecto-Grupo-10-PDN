@@ -27,7 +27,7 @@
     <tbody>
         {% for r in reservas %}
         <tr>
-        <td>{{ r.id }}</td>
+        <td>{{ r.numero_visual }}</td>
         <td><strong>{{ r.pasajero_nombre }}</strong></td>
             <td>{{ r.pasajero_cedula }}</td>
             <td>{{ r.vuelo.codigo }} ({{ r.vuelo.origen }} ➔ {{ r.vuelo.destino }}) ——— {{ r.vuelo.fecha }}</td></td>
